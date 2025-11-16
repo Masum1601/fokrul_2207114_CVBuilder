@@ -33,7 +33,7 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="551.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextField alignment="CENTER" editable="false" prefHeight="29.0" prefWidth="125.0" style="-fx-background-color: D3D3D3;" text="Make Your CV">
+                  <TextField alignment="CENTER" editable="false" prefHeight="27.0" prefWidth="161.0" style="-fx-background-color: D3D3D3;" text="Make Your CV? Click Create">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
