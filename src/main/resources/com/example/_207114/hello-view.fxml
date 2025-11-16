@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example._207114.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<VBox alignment="CENTER" prefHeight="353.0" prefWidth="571.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._207114.HelloController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+   <children>
+      <BorderPane prefHeight="380.0" prefWidth="615.0">
+         <center>
+            <TextField alignment="CENTER" prefHeight="113.0" prefWidth="551.0" style="-fx-background-color: D3D3D3; -fx-border-width: 0;" text="Welcome to CV BUILDER" BorderPane.alignment="CENTER">
+               <effect>
+                  <Lighting bumpInput="$null">
+                     <light>
+                        <Light.Distant />
+                     </light>
+                  </Lighting>
+               </effect>
+               <font>
+                  <Font name="Cambria Bold Italic" size="33.0" />
+               </font>
+            </TextField>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="551.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField alignment="CENTER" prefHeight="29.0" prefWidth="125.0" style="-fx-background-color: D3D3D3;" text="Make Your CV">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Calibri Bold Italic" size="13.0" />
+                     </font>
+                  </TextField>
+                  <Button mnemonicParsing="false" style="-fx-background-color: D3D3D3;" text="Create" textFill="#0037ff">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </children>
 </VBox>
