@@ -2,9 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -16,20 +15,6 @@
     </padding>
    <children>
       <BorderPane prefHeight="380.0" prefWidth="615.0">
-         <center>
-            <TextField alignment="CENTER" editable="false" prefHeight="113.0" prefWidth="551.0" style="-fx-background-color: 000000; -fx-border-width: 0;" text="Welcome to CV BUILDER" BorderPane.alignment="CENTER">
-               <effect>
-                  <Lighting bumpInput="$null">
-                     <light>
-                        <Light.Distant />
-                     </light>
-                  </Lighting>
-               </effect>
-               <font>
-                  <Font name="Cambria Bold Italic" size="33.0" />
-               </font>
-            </TextField>
-         </center>
          <bottom>
             <HBox alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="551.0" BorderPane.alignment="CENTER">
                <children>
@@ -44,7 +29,7 @@
                         <Font name="Calibri Bold Italic" size="13.0" />
                      </font>
                   </TextField>
-                  <Button mnemonicParsing="false" style="-fx-background-color: D3D3D3;" text="Create" textFill="#0037ff">
+                  <Button fx:id="create" mnemonicParsing="false" onAction="#oncreate" style="-fx-background-color: D3D3D3;" text="Create" textFill="#0037ff">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
@@ -55,6 +40,13 @@
                </children>
             </HBox>
          </bottom>
+         <center>
+            <Label alignment="CENTER" prefHeight="144.0" prefWidth="413.0" text="Welcome to CV BUILDER" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="33.0" />
+               </font>
+            </Label>
+         </center>
       </BorderPane>
    </children>
 </VBox>
