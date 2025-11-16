@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="700.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+
+        <HBox alignment="CENTER" prefHeight="60.0">
+            <children>
+                <TextField alignment="CENTER" prefHeight="38.0" prefWidth="580.0" text="Resume Maker">
+                    <font>
+                        <Font name="Corbel Bold Italic" size="28.0" />
+                    </font>
+                </TextField>
+            </children>
+        </HBox>
+
+        <Separator prefWidth="600.0" />
+
+        <VBox prefWidth="600.0" spacing="10.0">
+            <VBox.margin>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </VBox.margin>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Full Name:" />
+                    <TextField fx:id="fullNameField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Email:" />
+                    <TextField fx:id="emailField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Phone No:" />
+                    <TextField fx:id="phoneField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Address:" />
+                    <VBox prefWidth="480.0" spacing="5">
+                        <children>
+                            <HBox spacing="10">
+                                <children>
+                                    <Label prefWidth="60" text="Country:" />
+                                    <TextField fx:id="countryField" prefWidth="190" />
+                                    <Label prefWidth="60" text="Division:" />
+                                    <TextField fx:id="divisionField" prefWidth="170" />
+                                </children>
+                            </HBox>
+                            <HBox spacing="10">
+                                <children>
+                                    <Label prefWidth="60" text="City:" />
+                                    <TextField fx:id="cityField" prefHeight="25.0" prefWidth="165.0" />
+                                    <Label prefWidth="60" text="House No:" />
+                                    <TextField fx:id="houseField" prefWidth="170" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Education:" />
+                    <VBox prefWidth="480.0" spacing="5">
+                        <children>
+                            <HBox spacing="10">
+                                <children>
+                                    <Label prefWidth="60" text="SSC:" />
+                                    <TextField fx:id="sscField" prefWidth="190" />
+                                    <Label prefWidth="60" text="HSC:" />
+                                    <TextField fx:id="hscField" prefWidth="170" />
+                                </children>
+                            </HBox>
+                            <HBox spacing="10">
+                                <children>
+                                    <Label prefWidth="60" text="BSC:" />
+                                    <TextField fx:id="bscField" prefWidth="190" />
+                                    <Label prefWidth="60" text="MSC:" />
+                                    <TextField fx:id="mscField" prefWidth="170" />
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Skills:" />
+                    <TextField fx:id="skillsField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Experience:" />
+                    <TextField fx:id="experienceField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+            <HBox spacing="10">
+                <children>
+                    <Label prefWidth="100.0" text="Projects:" />
+                    <TextField fx:id="projectsField" prefWidth="480.0" />
+                </children>
+            </HBox>
+
+        </VBox>
+
+    </children>
+</VBox>
