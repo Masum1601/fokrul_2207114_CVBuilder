@@ -1,58 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="362.0" prefWidth="600.0" spacing="10" style="-fx-background-color: #fdf6e3;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._207114.previewcontroller">
+
+<VBox alignment="CENTER" prefHeight="402.0" prefWidth="600.0" spacing="10" style="-fx-background-color: #fdf6e3;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._207114.previewcontroller">
     <children>
-        <HBox alignment="CENTER" prefHeight="60.0">
+        <HBox alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="600.0">
             <children>
-                <Label style="-fx-text-fill: black;" text="RESUME" underline="true">
-                    <font>
-                        <Font name="Corbel Bold Italic" size="28.0" />
-                    </font>
-                </Label>
+                <HBox alignment="CENTER" prefHeight="77.0" prefWidth="503.0">
+                    <children>
+                        <Label fx:id="previewHeading" prefHeight="85.0" prefWidth="501.0" text="RESUME">
+                            <font>
+                                <Font name="System Bold" size="22.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <!-- FIXED: Added fx:id for ImageView -->
+                        <ImageView fx:id="previewImageView" fitHeight="95.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" />
+                    </children>
+                </VBox>
             </children>
         </HBox>
 
-        <VBox spacing="8" style="-fx-padding: 10;">
+              <HBox alignment="CENTER" spacing="10" />
+
+              <VBox alignment="CENTER" spacing="8" style="-fx-padding: 10;">
             <children>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Full Name:" />
                         <Label fx:id="previewFullName" prefHeight="17.0" prefWidth="456.0" style="-fx-text-fill: black;" text="Your Name Here" />
                     </children>
                 </HBox>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Email:" />
                         <Label fx:id="previewEmail" prefHeight="17.0" prefWidth="448.0" style="-fx-text-fill: black;" text="email@example.com" />
                     </children>
                 </HBox>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Phone:" />
                         <Label fx:id="previewPhone" prefHeight="17.0" prefWidth="450.0" style="-fx-text-fill: black;" text="+880123456789" />
                     </children>
                 </HBox>
 
-                <VBox spacing="5">
+                      <VBox spacing="5">
                     <children>
                         <Label style="-fx-font-weight: bold; -fx-text-fill: black;" text="Address:" />
                         <Label fx:id="previewAddress" prefHeight="17.0" prefWidth="580.0" style="-fx-text-fill: black;" text="House No, City, Division, Country" wrapText="true" />
                     </children>
                 </VBox>
 
-                <VBox spacing="5">
+                      <VBox spacing="5">
                     <children>
                         <Label style="-fx-font-weight: bold; -fx-text-fill: black;" text="Education:" />
 
-                        <HBox spacing="10">
+                              <HBox spacing="10">
                             <children>
                                 <Label prefWidth="60" style="-fx-font-weight: bold; -fx-text-fill: black;" text="SSC:" />
                                 <Label fx:id="previewSSC" prefHeight="17.0" prefWidth="143.0" style="-fx-text-fill: black;" text="SSC Details" />
@@ -61,46 +75,46 @@
                             </children>
                         </HBox>
 
-                        <HBox spacing="10">
+                              <HBox spacing="10">
                             <children>
                                 <Label prefWidth="60" style="-fx-font-weight: bold; -fx-text-fill: black;" text="BSC:" />
                                 <Label fx:id="previewBSC" prefHeight="17.0" prefWidth="139.0" style="-fx-text-fill: black;" text="BSC Details" />
 
-                                <Label prefHeight="17.0" prefWidth="70.0" text="MSC">
+                                      <Label prefHeight="17.0" prefWidth="70.0" text="MSC">
                                     <font>
                                         <Font name="System Bold" size="12.0" />
                                     </font>
                                 </Label>
 
-                                <Label fx:id="previewMSC" prefHeight="17.0" prefWidth="359.0" style="-fx-text-fill: black;" text="MSC Details" />
+                                      <Label fx:id="previewMSC" prefHeight="17.0" prefWidth="359.0" style="-fx-text-fill: black;" text="MSC Details" />
                             </children>
                         </HBox>
                     </children>
                 </VBox>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Skills:" />
                         <Label fx:id="previewSkills" prefHeight="17.0" prefWidth="451.0" style="-fx-text-fill: black;" text="Your Skills Here" wrapText="true" />
                     </children>
                 </HBox>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Experience:" />
                         <Label fx:id="previewExperience" prefHeight="17.0" prefWidth="454.0" style="-fx-text-fill: black;" text="Your Experience Here" wrapText="true" />
                     </children>
                 </HBox>
 
-                <HBox spacing="10">
+                      <HBox spacing="10">
                     <children>
                         <Label prefWidth="120" style="-fx-font-weight: bold; -fx-text-fill: black;" text="Projects:" />
                         <Label fx:id="previewProjects" prefHeight="17.0" prefWidth="462.0" style="-fx-text-fill: black;" text="Your Projects Here" wrapText="true" />
                     </children>
                 </HBox>
 
-            </children>
+                  </children>
         </VBox>
 
-    </children>
+          </children>
 </VBox>

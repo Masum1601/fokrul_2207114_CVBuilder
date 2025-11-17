@@ -5,14 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="487.0" prefWidth="600.0" spacing="10" style="-fx-background-color: e6f0fa;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._207114.formcontroller">
+
+<VBox prefHeight="488.0" prefWidth="600.0" spacing="10" style="-fx-background-color: e6f0fa;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._207114.formcontroller">
     <children>
 
-        <HBox alignment="CENTER" prefHeight="60.0">
+              <HBox alignment="CENTER" prefHeight="60.0">
             <children>
                 <TextField alignment="CENTER" editable="false" prefHeight="38.0" prefWidth="580.0" style="-fx-background-color: e6f0fa;" text="Resume Maker">
                     <font>
@@ -22,35 +24,35 @@
             </children>
         </HBox>
 
-        <Separator prefWidth="600.0" />
+              <Separator prefWidth="600.0" />
 
-        <VBox alignment="CENTER" prefWidth="600.0" spacing="10.0">
+              <VBox alignment="CENTER" prefWidth="600.0" spacing="10.0">
             <VBox.margin>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </VBox.margin>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Full Name:" />
                     <TextField fx:id="fullNameField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Email:" />
                     <TextField fx:id="emailField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Phone No:" />
                     <TextField fx:id="phoneField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Address:" />
                     <VBox prefWidth="480.0" spacing="5">
@@ -76,7 +78,7 @@
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Education:" />
                     <VBox prefWidth="480.0" spacing="5">
@@ -102,37 +104,49 @@
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Skills:" />
-                    <TextField fx:id="skillsField" prefWidth="480.0" />
+                    <TextField fx:id="skillsField" prefHeight="40.0" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Experience:" />
-                    <TextField fx:id="experienceField" prefWidth="480.0" />
+                    <TextField fx:id="experienceField" prefHeight="41.0" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+                  <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Projects:" />
-                    <TextField fx:id="projectsField" prefWidth="480.0" />
+                    <TextField fx:id="projectsField" prefHeight="40.0" prefWidth="480.0" />
+                </children>
+            </HBox>
+            
+                  <HBox alignment="CENTER" prefHeight="120.0" prefWidth="600.0" spacing="10" style="-fx-border-width: 0;">
+                <children>
+                    <Label prefHeight="17.0" prefWidth="92.0" text="Add Image:" />
+                    <Button fx:id="uploadImageBtn" onAction="#onUploadImage" prefHeight="30" prefWidth="113.0" text="Upload Image" />
+                    <ImageView fx:id="profileImageView" fitHeight="120" fitWidth="120" preserveRatio="true" style="-fx-background-color: #dce3eb; -fx-border-color: #aaa;" />
                 </children>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="10">
+      
+      
+                  <HBox alignment="BOTTOM_RIGHT" prefHeight="48.0" prefWidth="580.0" spacing="10">
                 <children>
-                    <Button fx:id="genrate" onAction="#ongenerate" prefHeight="40" prefWidth="164.0" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold;" text="Generate Resume">
+               <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" />
+                    <Button fx:id="genrate" alignment="CENTER" onAction="#ongenerate" prefHeight="40" prefWidth="164.0" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold;" text="Generate Resume">
                   <font>
                      <Font name="System Bold Italic" size="12.0" />
-                  </font></Button>
+                  </font>
+               </Button>
                 </children>
             </HBox>
 
-        </VBox>
+              </VBox>
 
-    </children>
+          </children>
 </VBox>

@@ -1,10 +1,13 @@
 package com.example._207114;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 
 public class previewcontroller {
-
+    @FXML
+    private Label previewHeading;
     @FXML
     private Label previewFullName;
     @FXML
@@ -27,6 +30,8 @@ public class previewcontroller {
     private Label previewExperience;
     @FXML
     private Label previewProjects;
+    @FXML
+    private ImageView previewImageView;
 
     public void setData(
             String fullName,
@@ -42,8 +47,10 @@ public class previewcontroller {
             String msc,
             String skills,
             String experience,
-            String projects
+            String projects,
+            Image image
     ) {
+        previewHeading.setText("Resume of " + fullName);
         previewFullName.setText(fullName);
         previewEmail.setText(email);
         previewPhone.setText(phone);
@@ -55,5 +62,8 @@ public class previewcontroller {
         previewSkills.setText(skills);
         previewExperience.setText(experience);
         previewProjects.setText(projects);
+        if (image != null) {
+            previewImageView.setImage(image);
+        }
     }
 }
