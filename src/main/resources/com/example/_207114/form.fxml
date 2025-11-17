@@ -14,7 +14,7 @@
 
         <HBox alignment="CENTER" prefHeight="60.0">
             <children>
-                <TextField alignment="CENTER" prefHeight="38.0" prefWidth="580.0" style="-fx-background-color: e6f0fa;" text="Resume Maker">
+                <TextField alignment="CENTER" editable="false" prefHeight="38.0" prefWidth="580.0" style="-fx-background-color: e6f0fa;" text="Resume Maker">
                     <font>
                         <Font name="Corbel Bold Italic" size="28.0" />
                     </font>
@@ -24,33 +24,33 @@
 
         <Separator prefWidth="600.0" />
 
-        <VBox prefWidth="600.0" spacing="10.0">
+        <VBox alignment="CENTER" prefWidth="600.0" spacing="10.0">
             <VBox.margin>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </VBox.margin>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Full Name:" />
                     <TextField fx:id="fullNameField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Email:" />
                     <TextField fx:id="emailField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Phone No:" />
                     <TextField fx:id="phoneField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Address:" />
                     <VBox prefWidth="480.0" spacing="5">
@@ -76,7 +76,7 @@
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Education:" />
                     <VBox prefWidth="480.0" spacing="5">
@@ -102,27 +102,27 @@
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Skills:" />
                     <TextField fx:id="skillsField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Experience:" />
                     <TextField fx:id="experienceField" prefWidth="480.0" />
                 </children>
             </HBox>
 
-            <HBox spacing="10">
+            <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Label prefWidth="100.0" text="Projects:" />
                     <TextField fx:id="projectsField" prefWidth="480.0" />
                 </children>
             </HBox>
-            
+
             <HBox alignment="CENTER" spacing="10">
                 <children>
                     <Button fx:id="generateButton" prefHeight="40" prefWidth="164.0" style="-fx-background-color: #4a90e2; -fx-text-fill: white; -fx-font-weight: bold;" text="Generate Resume">
