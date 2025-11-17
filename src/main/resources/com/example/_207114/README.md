@@ -1,0 +1,2 @@
+# CV BUILDER by FOKRUL_2207114
+This is a JavaFX-based Resume Builder application that allows users to create professional CVs easily. Users can fill in their personal details, education, skills, experience and projects and upload a profile image. The application generates a formatted resume preview instantly.
