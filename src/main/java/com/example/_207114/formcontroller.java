@@ -69,7 +69,7 @@ public class formcontroller {
 
     private Image selectedImage;
     private String savedImagePath;
-    private Resume currentResume; // For editing existing resume
+    private Resume currentResume;
     private DatabaseManager dbManager;
 
     @FXML
@@ -91,20 +91,17 @@ public class formcontroller {
             selectedImage = new Image(file.toURI().toString());
             profileImageView.setImage(selectedImage);
 
-            // Save image to local directory
             savedImagePath = saveImageToLocal(file);
         }
     }
 
     private String saveImageToLocal(File sourceFile) {
         try {
-            // Create images directory if it doesn't exist
             Path imagesDir = Paths.get("resume_images");
             if (!Files.exists(imagesDir)) {
                 Files.createDirectories(imagesDir);
             }
 
-            // Copy file with unique name
             String fileName = System.currentTimeMillis() + "_" + sourceFile.getName();
             Path targetPath = imagesDir.resolve(fileName);
             Files.copy(sourceFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -141,7 +138,7 @@ public class formcontroller {
         );
 
         if (currentResume != null && currentResume.getId() > 0) {
-            // Update existing resume
+
             resume.setId(currentResume.getId());
             if (dbManager.updateResume(resume)) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Resume updated successfully!");
@@ -150,7 +147,6 @@ public class formcontroller {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to update resume.");
             }
         } else {
-            // Save new resume
             int id = dbManager.saveResume(resume);
             if (id > 0) {
                 resume.setId(id);
@@ -193,7 +189,6 @@ public class formcontroller {
         experienceField.setText(resume.getExperience());
         projectsField.setText(resume.getProjects());
 
-        // Load image
         if (resume.getImagePath() != null && !resume.getImagePath().isEmpty()) {
             File imageFile = new File(resume.getImagePath());
             if (imageFile.exists()) {
