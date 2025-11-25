@@ -59,12 +59,12 @@ public class DatabaseManager {
 
     public int saveResume(Resume resume) {
         String sql = """
-            INSERT INTO resumes (full_name, email, phone, country, division, city, house,
-                                ssc, hsc, bsc, msc, skills, experience, projects, image_path)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+        INSERT INTO resumes (full_name, email, phone, country, division, city, house,
+                             ssc, hsc, bsc, msc, skills, experience, projects, image_path)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, resume.getFullName());
             pstmt.setString(2, resume.getEmail());
             pstmt.setString(3, resume.getPhone());
@@ -83,9 +83,10 @@ public class DatabaseManager {
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
-                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1);
+                try (Statement stmt = connection.createStatement()) {
+                    ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()");
+                    if (rs.next()) {
+                        return rs.getInt(1);
                     }
                 }
             }
@@ -94,6 +95,7 @@ public class DatabaseManager {
         }
         return -1;
     }
+
 
     public boolean updateResume(Resume resume) {
         String sql = """
