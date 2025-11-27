@@ -1,27 +1,48 @@
 package com.example._207114;
 
 import java.sql.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DatabaseManager {
     private static final String DB_URL = "jdbc:sqlite:cv_builder.db";
     private static DatabaseManager instance;
     private Connection connection;
 
+    private final ExecutorService executorService;
+
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+
+    private final BlockingQueue<Connection> connectionPool;
+    private static final int POOL_SIZE = 5;
+
     private DatabaseManager() {
+        executorService = Executors.newFixedThreadPool(3);
+
+        connectionPool = new LinkedBlockingQueue<>(POOL_SIZE);
+
         try {
             connection = DriverManager.getConnection(DB_URL);
             createTables();
+
+
+            for (int i = 0; i < POOL_SIZE; i++) {
+                connectionPool.offer(DriverManager.getConnection(DB_URL));
+            }
+
+            System.out.println("Database initialized with connection pool");
         } catch (SQLException e) {
             System.err.println("Database connection error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    public static DatabaseManager getInstance() {
+    public static synchronized DatabaseManager getInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
         }
-        System.out.println("db iniatia");
         return instance;
     }
 
@@ -49,127 +70,221 @@ public class DatabaseManager {
             )
         """;
 
+        lock.writeLock().lock();
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createResumeTable);
             System.out.println("Database tables created successfully");
         } catch (SQLException e) {
             System.err.println("Error creating tables: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    private Connection getConnection() throws InterruptedException {
+        return connectionPool.take();
+    }
+
+    private void returnConnection(Connection conn) {
+        if (conn != null) {
+            connectionPool.offer(conn);
         }
     }
 
     public int saveResume(Resume resume) {
-        String sql = """
-        INSERT INTO resumes (full_name, email, phone, country, division, city, house,
-                             ssc, hsc, bsc, msc, skills, experience, projects, image_path)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """;
+        lock.writeLock().lock();
+        Connection conn = null;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, resume.getFullName());
-            pstmt.setString(2, resume.getEmail());
-            pstmt.setString(3, resume.getPhone());
-            pstmt.setString(4, resume.getCountry());
-            pstmt.setString(5, resume.getDivision());
-            pstmt.setString(6, resume.getCity());
-            pstmt.setString(7, resume.getHouse());
-            pstmt.setString(8, resume.getSsc());
-            pstmt.setString(9, resume.getHsc());
-            pstmt.setString(10, resume.getBsc());
-            pstmt.setString(11, resume.getMsc());
-            pstmt.setString(12, resume.getSkills());
-            pstmt.setString(13, resume.getExperience());
-            pstmt.setString(14, resume.getProjects());
-            pstmt.setString(15, resume.getImagePath());
+        try {
+            conn = getConnection();
+            String sql = """
+                INSERT INTO resumes (full_name, email, phone, country, division, city, house,
+                                    ssc, hsc, bsc, msc, skills, experience, projects, image_path)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                try (Statement stmt = connection.createStatement()) {
-                    ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()");
-                    if (rs.next()) {
-                        return rs.getInt(1);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                setResumeParameters(pstmt, resume);
+
+                int affectedRows = pstmt.executeUpdate();
+                System.out.println("Affected rows: " + affectedRows);
+
+                if (affectedRows > 0) {
+                    // SQLite-specific way to get last inserted ID
+                    try (Statement stmt = conn.createStatement();
+                         ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()")) {
+                        if (rs.next()) {
+                            int id = rs.getInt(1);
+                            System.out.println("Resume saved with ID: " + id);
+                            return id;
+                        }
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             System.err.println("Error saving resume: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            returnConnection(conn);
+            lock.writeLock().unlock();
         }
         return -1;
     }
 
+    public CompletableFuture<Integer> saveResumeAsync(Resume resume) {
+        return CompletableFuture.supplyAsync(() -> saveResume(resume), executorService);
+    }
 
     public boolean updateResume(Resume resume) {
-        String sql = """
-            UPDATE resumes SET 
-                full_name = ?, email = ?, phone = ?, country = ?, division = ?, 
-                city = ?, house = ?, ssc = ?, hsc = ?, bsc = ?, msc = ?,
-                skills = ?, experience = ?, projects = ?, image_path = ?,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE id = ?
-        """;
+        lock.writeLock().lock();
+        Connection conn = null;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, resume.getFullName());
-            pstmt.setString(2, resume.getEmail());
-            pstmt.setString(3, resume.getPhone());
-            pstmt.setString(4, resume.getCountry());
-            pstmt.setString(5, resume.getDivision());
-            pstmt.setString(6, resume.getCity());
-            pstmt.setString(7, resume.getHouse());
-            pstmt.setString(8, resume.getSsc());
-            pstmt.setString(9, resume.getHsc());
-            pstmt.setString(10, resume.getBsc());
-            pstmt.setString(11, resume.getMsc());
-            pstmt.setString(12, resume.getSkills());
-            pstmt.setString(13, resume.getExperience());
-            pstmt.setString(14, resume.getProjects());
-            pstmt.setString(15, resume.getImagePath());
-            pstmt.setInt(16, resume.getId());
+        try {
+            conn = getConnection();
+            String sql = """
+                UPDATE resumes SET 
+                    full_name = ?, email = ?, phone = ?, country = ?, division = ?, 
+                    city = ?, house = ?, ssc = ?, hsc = ?, bsc = ?, msc = ?,
+                    skills = ?, experience = ?, projects = ?, image_path = ?,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+            """;
 
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                setResumeParameters(pstmt, resume);
+                pstmt.setInt(16, resume.getId());
+
+                int affectedRows = pstmt.executeUpdate();
+                System.out.println("Update affected rows: " + affectedRows);
+                return affectedRows > 0;
+            }
+        } catch (SQLException | InterruptedException e) {
             System.err.println("Error updating resume: " + e.getMessage());
+            e.printStackTrace();
             return false;
+        } finally {
+            returnConnection(conn);
+            lock.writeLock().unlock();
         }
     }
 
+    public CompletableFuture<Boolean> updateResumeAsync(Resume resume) {
+        return CompletableFuture.supplyAsync(() -> updateResume(resume), executorService);
+    }
+
     public Resume getResumeById(int id) {
-        String sql = "SELECT * FROM resumes WHERE id = ?";
+        lock.readLock().lock();
+        Connection conn = null;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+        try {
+            conn = getConnection();
+            String sql = "SELECT * FROM resumes WHERE id = ?";
 
-            if (rs.next()) {
-                return extractResumeFromResultSet(rs);
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    Resume resume = extractResumeFromResultSet(rs);
+                    System.out.println("Resume loaded: " + resume);
+                    return resume;
+                }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             System.err.println("Error getting resume: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            returnConnection(conn);
+            lock.readLock().unlock();
         }
         return null;
     }
 
-    public ResultSet getAllResumes() {
-        String sql = "SELECT id, full_name, email, created_at FROM resumes ORDER BY updated_at DESC";
+    public CompletableFuture<Resume> getResumeByIdAsync(int id) {
+        return CompletableFuture.supplyAsync(() -> getResumeById(id), executorService);
+    }
+
+    public List<ResumeListItem> getAllResumes() {
+        lock.readLock().lock();
+        Connection conn = null;
+        List<ResumeListItem> resumes = new ArrayList<>();
 
         try {
-            Statement stmt = connection.createStatement();
-            return stmt.executeQuery(sql);
-        } catch (SQLException e) {
+            conn = getConnection();
+            String sql = "SELECT id, full_name, email, created_at FROM resumes ORDER BY updated_at DESC";
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+
+                while (rs.next()) {
+                    resumes.add(new ResumeListItem(
+                            rs.getInt("id"),
+                            rs.getString("full_name"),
+                            rs.getString("email")
+                    ));
+                }
+                System.out.println("Loaded " + resumes.size() + " resumes");
+            }
+        } catch (SQLException | InterruptedException e) {
             System.err.println("Error getting all resumes: " + e.getMessage());
-            return null;
+            e.printStackTrace();
+        } finally {
+            returnConnection(conn);
+            lock.readLock().unlock();
         }
+        return resumes;
+    }
+
+    public CompletableFuture<List<ResumeListItem>> getAllResumesAsync() {
+        return CompletableFuture.supplyAsync(this::getAllResumes, executorService);
     }
 
     public boolean deleteResume(int id) {
-        String sql = "DELETE FROM resumes WHERE id = ?";
+        lock.writeLock().lock();
+        Connection conn = null;
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
+        try {
+            conn = getConnection();
+            String sql = "DELETE FROM resumes WHERE id = ?";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, id);
+                int affectedRows = pstmt.executeUpdate();
+                System.out.println("Delete affected rows: " + affectedRows);
+                return affectedRows > 0;
+            }
+        } catch (SQLException | InterruptedException e) {
             System.err.println("Error deleting resume: " + e.getMessage());
+            e.printStackTrace();
             return false;
+        } finally {
+            returnConnection(conn);
+            lock.writeLock().unlock();
         }
+    }
+
+
+    public CompletableFuture<Boolean> deleteResumeAsync(int id) {
+        return CompletableFuture.supplyAsync(() -> deleteResume(id), executorService);
+    }
+
+    private void setResumeParameters(PreparedStatement pstmt, Resume resume) throws SQLException {
+        pstmt.setString(1, resume.getFullName() != null ? resume.getFullName() : "");
+        pstmt.setString(2, resume.getEmail() != null ? resume.getEmail() : "");
+        pstmt.setString(3, resume.getPhone() != null ? resume.getPhone() : "");
+        pstmt.setString(4, resume.getCountry() != null ? resume.getCountry() : "");
+        pstmt.setString(5, resume.getDivision() != null ? resume.getDivision() : "");
+        pstmt.setString(6, resume.getCity() != null ? resume.getCity() : "");
+        pstmt.setString(7, resume.getHouse() != null ? resume.getHouse() : "");
+        pstmt.setString(8, resume.getSsc() != null ? resume.getSsc() : "");
+        pstmt.setString(9, resume.getHsc() != null ? resume.getHsc() : "");
+        pstmt.setString(10, resume.getBsc() != null ? resume.getBsc() : "");
+        pstmt.setString(11, resume.getMsc() != null ? resume.getMsc() : "");
+        pstmt.setString(12, resume.getSkills() != null ? resume.getSkills() : "");
+        pstmt.setString(13, resume.getExperience() != null ? resume.getExperience() : "");
+        pstmt.setString(14, resume.getProjects() != null ? resume.getProjects() : "");
+        pstmt.setString(15, resume.getImagePath() != null ? resume.getImagePath() : "");
     }
 
     private Resume extractResumeFromResultSet(ResultSet rs) throws SQLException {
@@ -193,13 +308,59 @@ public class DatabaseManager {
         return resume;
     }
 
-    public void closeConnection() {
+
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+        }
+        closeAllConnections();
+    }
+
+    private void closeAllConnections() {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
             }
+
+
+            Connection conn;
+            while ((conn = connectionPool.poll()) != null) {
+                if (!conn.isClosed()) {
+                    conn.close();
+                }
+            }
+            System.out.println("All database connections closed");
         } catch (SQLException e) {
-            System.err.println("Error closing connection: " + e.getMessage());
+            System.err.println("Error closing connections: " + e.getMessage());
+        }
+    }
+
+    public static class ResumeListItem {
+        private final int id;
+        private final String fullName;
+        private final String email;
+
+        public ResumeListItem(int id, String fullName, String email) {
+            this.id = id;
+            this.fullName = fullName;
+            this.email = email;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public String getEmail() {
+            return email;
         }
     }
 }
